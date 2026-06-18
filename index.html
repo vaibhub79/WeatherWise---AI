@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WeatherWise AI - Your intelligent weather companion with AI-powered insights">
+    <title>WeatherWise AI | Premium Weather Dashboard</title>
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts - Inter for modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ANIMATED BACKGROUND CONTAINER -->
+    <div id="animatedBg" class="animated-bg"></div>
+    
+    <!-- THEME TOGGLE BUTTON -->
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+    
+    <!-- MAIN APPLICATION -->
+    <div class="app-wrapper">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="brand-icon">🌤️</div>
+                    <div class="brand-text">
+                        <h1 class="brand-title">WeatherWise</h1>
+                        <p class="brand-subtitle">AI Weather Companion</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTAINER -->
+        <main class="container">
+            
+            <!-- SEARCH SECTION -->
+            <section class="search-section" aria-label="Search weather">
+                <div class="search-wrapper">
+                    <div class="search-box">
+                        <div class="search-input-group">
+                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                            <input 
+                                type="text" 
+                                id="cityInput" 
+                                class="search-input" 
+                                placeholder="Search any city..."
+                                aria-label="Enter city name">
+                            <button id="voiceBtn" class="voice-btn" aria-label="Search by voice">
+                                <i class="fa-solid fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-actions">
+                        <button id="searchBtn" class="btn btn-primary search-submit" aria-label="Search">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                        <button id="locationBtn" class="btn btn-secondary location-btn" aria-label="Use current location">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </button>
+                        <button id="favoriteBtn" class="btn btn-accent favorite-btn" aria-label="Add to favorites">
+                            <i class="fa-solid fa-star"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LOADER STATE -->
+            <div id="loader" class="loader hidden" aria-live="polite" aria-label="Loading weather data">
+                <div class="loader-spinner">
+                    <div class="spinner"></div>
+                    <p>Fetching your weather...</p>
+                </div>
+            </div>
+
+            <!-- ERROR STATE -->
+            <div id="errorMessage" class="error-state hidden" role="alert" aria-live="assertive"></div>
+
+            <!-- HERO WEATHER SECTION -->
+            <section id="weatherCard" class="weather-section hidden">
+                <div class="weather-hero">
+                    <!-- Weather Icon Container -->
+                    <div class="hero-icon-wrapper">
+                        <img id="weatherIcon" class="hero-weather-icon" src="" alt="Weather icon">
+                    </div>
+
+                    <!-- City & Date -->
+                    <div class="hero-header">
+                        <h2 id="cityName" class="city-name">City Name</h2>
+                        <p id="currentDate" class="current-date">Date</p>
+                    </div>
+
+                    <!-- Main Temperature -->
+                    <div class="temperature-display">
+                        <div class="temp-value">
+                            <span id="temperature" class="temp-number">--</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="weather-condition-info">
+                            <p id="weatherDescription" class="weather-desc">Loading...</p>
+                            <p id="feelsLike" class="feels-like">Feels like --°C</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QUICK STATS GRID -->
+                <div class="quick-stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">💧</div>
+                        <div class="stat-content">
+                            <p class="stat-label">Humidity</p>
+                            <p id="humidity" class="stat-value">--%</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💨</div>
+                        <div class="stat-content">
+                            <p class="stat-label">Wind</p>
+                            <p id="windSpeed" class="stat-value">-- m/s</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔽</div>
+                        <div class="stat-content">
+                            <p class="stat-label">Pressure</p>
+                            <p id="pressure" class="stat-value">-- hPa</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👁</div>
+                        <div class="stat-content">
+                            <p class="stat-label">Visibility</p>
+                            <p id="visibility" class="stat-value">-- km</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUN TIMES SECTION -->
+                <div class="sun-times-grid">
+                    <div class="sun-card sunrise-card">
+                        <i class="fa-solid fa-sun sun-icon"></i>
+                        <div class="sun-info">
+                            <span class="sun-label">Sunrise</span>
+                            <span id="sunrise" class="sun-time">--:--</span>
+                        </div>
+                    </div>
+                    <div class="sun-card sunset-card">
+                        <i class="fa-solid fa-moon sun-icon"></i>
+                        <div class="sun-info">
+                            <span class="sun-label">Sunset</span>
+                            <span id="sunset" class="sun-time">--:--</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FORECAST SECTIONS -->
+            <section id="forecastSection" class="forecast-section hidden" aria-label="Weather forecast">
+                <!-- 24 HOUR FORECAST -->
+                <div class="forecast-container">
+                    <h3 class="section-title">24-Hour Forecast</h3>
+                    <div id="hourlyForecast" class="forecast-scroll" role="list"></div>
+                </div>
+
+                <!-- 7 DAY FORECAST -->
+                <div class="forecast-container">
+                    <h3 class="section-title">7-Day Forecast</h3>
+                    <div id="weeklyForecast" class="forecast-scroll" role="list"></div>
+                </div>
+            </section>
+
+            <!-- AI INSIGHTS SECTION -->
+            <section id="aiSection" class="ai-insights-section hidden" aria-label="AI weather insights">
+                <h2 class="section-title-large">🤖 AI Weather Assistant</h2>
+                
+                <div class="insights-grid">
+                    <!-- Weather Summary -->
+                    <div class="insight-card summary-card">
+                        <div class="insight-header">
+                            <h3>Today's Summary</h3>
+                            <i class="fa-solid fa-cloud-sun"></i>
+                        </div>
+                        <p id="weatherSummary" class="insight-text">Analyzing weather data...</p>
+                    </div>
+
+                    <!-- What to Wear -->
+                    <div class="insight-card wear-card">
+                        <div class="insight-header">
+                            <h3>What to Wear</h3>
+                            <i class="fa-solid fa-shirt"></i>
+                        </div>
+                        <div id="wearSuggestion" class="suggestion-list"></div>
+                    </div>
+
+                    <!-- Activity Recommendations -->
+                    <div class="insight-card activity-card">
+                        <div class="insight-header">
+                            <h3>Recommended Activities</h3>
+                            <i class="fa-solid fa-person-hiking"></i>
+                        </div>
+                        <div id="activitySuggestion" class="suggestion-list"></div>
+                    </div>
+
+                    <!-- Travel Score -->
+                    <div class="insight-card travel-card">
+                        <div class="insight-header">
+                            <h3>Travel Score</h3>
+                            <i class="fa-solid fa-plane"></i>
+                        </div>
+                        <div id="travelScore" class="score-display">--/10</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- HEALTH & COMFORT SECTION -->
+            <section id="healthSection" class="health-section hidden" aria-label="Air quality and health info">
+                <h2 class="section-title-large">Health & Environment</h2>
+                
+                <div class="health-grid">
+                    <!-- Air Quality -->
+                    <div class="health-card aqi-card">
+                        <div class="health-header">
+                            <h3>Air Quality</h3>
+                            <i class="fa-solid fa-leaf"></i>
+                        </div>
+                        <div id="aqiCard" class="aqi-display">-- AQI</div>
+                        <div id="healthCard" class="health-advice"></div>
+                    </div>
+
+                    <!-- UV Index -->
+                    <div class="health-card uv-card">
+                        <div class="health-header">
+                            <h3>UV Index</h3>
+                            <i class="fa-solid fa-sun"></i>
+                        </div>
+                        <div id="uvCard" class="uv-display">-- UV</div>
+                    </div>
+
+                    <!-- Comfort Score -->
+                    <div class="health-card comfort-card">
+                        <div class="health-header">
+                            <h3>Comfort Level</h3>
+                            <i class="fa-solid fa-face-smile"></i>
+                        </div>
+                        <div id="comfortCard" class="comfort-display">-- %</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MULTI-CITY DASHBOARD -->
+            <section id="multiCitySection" class="multi-city-section hidden" aria-label="Multi-city weather comparison">
+                <h2 class="section-title-large">Cities Around the World</h2>
+                <div id="multiCityDashboard" class="cities-grid" role="list"></div>
+            </section>
+
+            <!-- FAVORITES & HISTORY -->
+            <section class="history-favorites-section">
+                <!-- Favorites -->
+                <div class="list-section favorites-list">
+                    <h3 class="section-title">Favorite Cities</h3>
+                    <div id="favoriteCities" class="items-container" role="list"></div>
+                </div>
+
+                <!-- Search History -->
+                <div class="list-section history-list">
+                    <h3 class="section-title">Recent Searches</h3>
+                    <div id="searchHistory" class="items-container" role="list"></div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>&copy; 2024 WeatherWise AI. Powered by OpenWeatherMap & Open-Meteo.</p>
+            <p class="footer-note">Your intelligent weather companion with AI insights.</p>
+        </footer>
+    </div>
+
+    <!-- SCRIPT -->
+    <script src="script.js"></script>
+</body>
+</html>
